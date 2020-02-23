@@ -38,7 +38,7 @@ namespace ComputerBuilder
             app.UseSwagger();
             app.UseSwaggerUI(x =>
             {
-                x.SwaggerEndpoint("/swagger/v1/swagger.json", "Shop API v1");
+                x.SwaggerEndpoint("/swagger/v1/swagger.json", "Computer builder API v1");
 
             });
             app.UseRouting();
