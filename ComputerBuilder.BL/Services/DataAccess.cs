@@ -1,7 +1,7 @@
 ﻿using ComputerBuilder.BL.Model;
 using System.Collections.Generic;
 
-namespace PCBuilder.BL.Services
+namespace ComputerBuilder.BL.Services
 {
     public class DataAccess : IDataAccess
     {

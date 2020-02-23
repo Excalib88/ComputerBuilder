@@ -1,6 +1,6 @@
 ﻿using ComputerBuilder.BL.Model;
 using Microsoft.AspNetCore.Mvc;
-using PCBuilder.BL.Services;
+using ComputerBuilder.BL.Services;
 using System.Linq;
 
 namespace ComputerBuilder.Controllers

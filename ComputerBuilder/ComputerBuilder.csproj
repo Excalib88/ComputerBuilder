@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\PCBuilder.BL\ComputerBuilder.BL.csproj" />
+    <ProjectReference Include="..\ComputerBuilder.BL\ComputerBuilder.BL.csproj" />
   </ItemGroup>
 
 
