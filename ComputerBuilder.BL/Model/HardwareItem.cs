@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace ComputerBuilder.BL.Model
 {
@@ -11,7 +10,6 @@ namespace ComputerBuilder.BL.Model
         /// <summary>
         /// Название железки
         /// </summary>
-        [StringLength(50)]
         public string Name { get; set; }
         /// <summary>
         /// Цена железки
@@ -20,7 +18,6 @@ namespace ComputerBuilder.BL.Model
         /// <summary>
         /// Описание других характеристик
         /// </summary>
-        [StringLength(255)]
         public string Description { get; set; }
         /// <summary>
         /// Производитель
@@ -35,7 +32,7 @@ namespace ComputerBuilder.BL.Model
         /// <summary>
         /// Список характеристик железки
         /// </summary>
-        public ICollection<Property> PropertyList { get; set; }
+        public ICollection<CompatibilityProperty> PropertyList { get; set; }
 
         public int? PCBuildId { get; set; }
         public ICollection<ComputerBuild> PCBuild { get; set; }
@@ -51,7 +48,7 @@ namespace ComputerBuilder.BL.Model
             Description = "Не определено";
             Manufacturer = null;
             HardwareType = null;
-            PropertyList = new List<Property>();
+            PropertyList = new List<CompatibilityProperty>();
             PCBuild = new List<ComputerBuild>();
         }
         /// <summary>
@@ -66,8 +63,7 @@ namespace ComputerBuilder.BL.Model
             double cost,
             string description,
             Manufacturer manufacturer,
-            HardwareType hardwareType,
-            ICollection<Property> properties)
+            HardwareType hardwareType)
         {
             #region Проверка условий
             if (string.IsNullOrWhiteSpace(name))
@@ -97,7 +93,7 @@ namespace ComputerBuilder.BL.Model
             Description = description;
             Manufacturer = manufacturer;
             HardwareType = hardwareType;
-            PropertyList = properties;
+            PropertyList = new List<CompatibilityProperty>();
         }
         public override string ToString()
         {

@@ -63,8 +63,8 @@ namespace ComputerBuilder.BL.Parser
                         var cost = s.SelectCost();
                         var sock = Regex.Match(s, rule.Property_templates["Сокет"]).Value;
                         var cpu_name = Regex.Match(s, string.Format(rule.Property_templates["Name"],Regex.Escape(sock))).Value;
-                        var cpu = new HardwareItem(cpu_name, cost, description, cpu_manufacturers.Where(m=>m.Name==rule.Rule_name).FirstOrDefault(), type, new List<Property>());
-                        cpu.PropertyList.Add(new Property("Сокет", sock));
+                        var cpu = new HardwareItem(cpu_name, cost, description, cpu_manufacturers.Where(m=>m.Name==rule.Rule_name).FirstOrDefault(), type);
+                        cpu.PropertyList.Add(new CompatibilityProperty("Сокет", sock));
                         cpu_list.Add(cpu);
                     }
                 }
@@ -89,7 +89,7 @@ namespace ComputerBuilder.BL.Parser
                     {
                         HardwareItem mb = new HardwareItem();
                         var socket = Regex.Match(s, r.Property_templates["Сокет"]).Value;
-                        mb.PropertyList.Add(new Property("Сокет", socket));
+                        mb.PropertyList.Add(new CompatibilityProperty("Сокет", socket));
                         mb.Name = Regex.Match(s, r.Property_templates["Name"]).Value;
                         mb.Cost = s.SelectCost();
                         mb.Description = s.SelectDescription();
@@ -118,9 +118,9 @@ namespace ComputerBuilder.BL.Parser
                     {
                         HardwareItem mem = new HardwareItem();
                         var prop = Regex.Match(s, r.Property_templates["Тип памяти"]).Value;
-                        mem.PropertyList.Add(new Property("Тип памяти", prop));
+                        mem.PropertyList.Add(new CompatibilityProperty("Тип памяти", prop));
                         prop = Regex.Match(s, r.Property_templates["Объём памяти"]).Value;
-                        mem.PropertyList.Add(new Property("Объём памяти", prop));
+                        mem.PropertyList.Add(new CompatibilityProperty("Объём памяти", prop));
                         mem.Name = Regex.Match(s, r.Property_templates["Name"]).Value;
                         mem.Cost = s.SelectCost();
                         mem.Description = Regex.Match(s, r.Property_templates["Description"]).Value;
@@ -149,11 +149,11 @@ namespace ComputerBuilder.BL.Parser
                     {
                         HardwareItem hdd = new HardwareItem();
                         var prop = Regex.Match(s, r.Property_templates["Тип устройства"],RegexOptions.IgnoreCase).Value;
-                        hdd.PropertyList.Add(new Property("Тип устройства", prop));
+                        hdd.PropertyList.Add(new CompatibilityProperty("Тип устройства", prop));
                         prop = Regex.Match(s, r.Property_templates["Разъём"]).Value;
-                        hdd.PropertyList.Add(new Property("Разъём", prop));
+                        hdd.PropertyList.Add(new CompatibilityProperty("Разъём", prop));
                         prop = Regex.Match(s, r.Property_templates["Объём памяти"], RegexOptions.IgnoreCase).Value;
-                        hdd.PropertyList.Add(new Property("Объём памяти", prop));
+                        hdd.PropertyList.Add(new CompatibilityProperty("Объём памяти", prop));
                         hdd.Name = Regex.Match(s, r.Property_templates["Name"]).Value;
                         hdd.Cost = s.SelectCost();
                         hdd.Description = s.SelectDescription();
@@ -182,7 +182,7 @@ namespace ComputerBuilder.BL.Parser
                     {
                         HardwareItem gpu = new HardwareItem();
                         var prop = Regex.Match(s, r.Property_templates["Объём памяти"], RegexOptions.IgnoreCase).Value;
-                        gpu.PropertyList.Add(new Property("Объём памяти", prop));
+                        gpu.PropertyList.Add(new CompatibilityProperty("Объём памяти", prop));
                         gpu.Name = Regex.Match(s, r.Property_templates["Name"], RegexOptions.IgnoreCase).Groups[3].Value;
                         gpu.Description = Regex.Match(s, r.Property_templates["Описание"]).Value;
                         gpu.Cost = s.SelectCost();

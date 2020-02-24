@@ -10,7 +10,6 @@ namespace ComputerBuilder.DAL.Entities
         /// <summary>
         /// Название производителя
         /// </summary>
-        [StringLength(50)]
         public string Name { get; set; }
         /// <summary>
         /// Список оборудования с таким производителем

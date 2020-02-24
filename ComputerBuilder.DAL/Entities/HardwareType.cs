@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace ComputerBuilder.DAL.Entities
 {
@@ -10,7 +9,6 @@ namespace ComputerBuilder.DAL.Entities
         /// <summary>
         /// Название типа оборудования
         /// </summary>
-        [StringLength(50)]
         public string Name { get; set; }
         /// <summary>
         /// Список оборудования с таким типом

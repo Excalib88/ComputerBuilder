@@ -65,8 +65,7 @@ namespace ComputerBuilder.DAL.Entities
             double cost,
             string description,
             Manufacturer manufacturer,
-            HardwareType hardwareType,
-            ICollection<CompatibilityProperty> properties)
+            HardwareType hardwareType)
         {
             #region Проверка условий
             if (string.IsNullOrWhiteSpace(name))
@@ -96,7 +95,7 @@ namespace ComputerBuilder.DAL.Entities
             Description = description;
             Manufacturer = manufacturer;
             HardwareType = hardwareType;
-            PropertyList = properties;
+            PropertyList = new List<CompatibilityProperty>();
         }
         public override string ToString()
         {

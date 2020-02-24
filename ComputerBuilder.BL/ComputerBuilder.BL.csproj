@@ -12,4 +12,8 @@
     <ProjectReference Include="..\ComputerBuilder.DAL\ComputerBuilder.DAL.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="services\" />
+  </ItemGroup>
+
 </Project>

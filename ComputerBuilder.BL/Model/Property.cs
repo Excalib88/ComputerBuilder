@@ -1,28 +1,25 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace ComputerBuilder.BL.Model
 {
-    public class Property
+    public class CompatibilityProperty
     {
         public int PropertyId { get; set; }
         /// <summary>
         /// Название характеристики
         /// </summary>
-        [StringLength(50)]
         public string Name { get; set; }
         /// <summary>
         /// Тип характеристики
         /// </summary>
-        [StringLength(50)]
         public string PropertyType { get; set; }
         /// <summary>
         /// Железка с такими свойствами
         /// </summary>
         public int HardwareItemId { get; set; }
         public virtual HardwareItem HardwareItem { get; set; }
-        public Property() { }
-        public Property (string propertyType, string name)
+        public CompatibilityProperty() { }
+        public CompatibilityProperty (string propertyType, string name)
         {
             if(string.IsNullOrWhiteSpace(name))
             {

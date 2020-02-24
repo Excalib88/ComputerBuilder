@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace ComputerBuilder.DAL.Entities
+﻿namespace ComputerBuilder.DAL.Entities
 {
     public class BuildItem
     {
