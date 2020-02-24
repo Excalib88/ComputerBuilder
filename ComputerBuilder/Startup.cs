@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using ComputerBuilder.BL.Services;
+using ComputerBuilder.DAL.Repositories;
 
 namespace ComputerBuilder
 {
@@ -21,7 +21,7 @@ namespace ComputerBuilder
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddTransient<IDataAccess, DataAccess>();
+            services.AddTransient<IDbRepository, DbRepository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Computer builder API", Version = "v1" });

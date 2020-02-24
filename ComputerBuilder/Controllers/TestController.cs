@@ -1,17 +1,21 @@
 ﻿using ComputerBuilder.BL.Model;
 using Microsoft.AspNetCore.Mvc;
-using ComputerBuilder.BL.Services;
 using System.Linq;
+using ComputerBuilder.DAL.Repositories;
 
 namespace ComputerBuilder.Controllers
 {
-    //[Route("test")] //Почему можно не указывать?
-    public class DataAccessController : BaseController
+    [Route("home")]
+    public class HomeController : BaseController
     {
-        private readonly IDataAccess _dataAccess;
-        public DataAccessController(IDataAccess dataAccess)
+        private readonly IDbRepository _dataAccess;
+        public HomeController (IDbRepository dataAccess)
         {
             _dataAccess = dataAccess;
+        }
+        public IActionResult Index()
+        {
+            return Ok();
         }
 
         [HttpGet("get_all_hardware/")]

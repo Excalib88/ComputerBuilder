@@ -1,16 +1,16 @@
-﻿using ComputerBuilder.BL.Model;
+﻿using ComputerBuilder.DAL.Entities;
 using System.Collections.Generic;
 
-namespace ComputerBuilder.BL.Services
+namespace ComputerBuilder.DAL.Repositories
 {
-    public class DataAccess : IDataAccess
+    public class DbRepository : IDbRepository
     {
         public IEnumerable<HardwareItem> GetHardwareItems()
         {
-            List<Property> propertiesIntel = new List<Property>();
-            List<Property> propertiesAMD = new List<Property>();
-            Property socket1151v2 = new Property("Сокет", "1151v2");
-            Property SocketAM4 = new Property("Сокет", "SocketAM4");
+            List<CompatibilityProperty> propertiesIntel = new List<CompatibilityProperty>();
+            List<CompatibilityProperty> propertiesAMD = new List<CompatibilityProperty>();
+            CompatibilityProperty socket1151v2 = new CompatibilityProperty("Сокет", "1151v2");
+            CompatibilityProperty SocketAM4 = new CompatibilityProperty("Сокет", "SocketAM4");
             propertiesIntel.Add(socket1151v2);
             propertiesAMD.Add(SocketAM4);
             yield return new HardwareItem("PRIME B360M-A",
