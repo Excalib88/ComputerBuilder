@@ -1,15 +1,12 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
-namespace ComputerBuilder.DAL.Entities
+namespace ComputerBuilder.BL.Model
 {
-    public class CompatibilityProperty
+    public class CompatibilityPropertyModel
     {
         public int Id { get; set; }
         /// <summary>
         /// Название характеристики
-        /// </summary>
-        [StringLength(50)]
         public string Name { get; set; }
         /// <summary>
         /// Тип характеристики
@@ -20,13 +17,13 @@ namespace ComputerBuilder.DAL.Entities
         /// Железка с такими свойствами
         /// </summary>
         public int HardwareItemId { get; set; }
-        public virtual HardwareItem HardwareItem { get; set; }
-        public CompatibilityProperty() { }
-        public CompatibilityProperty (string propertyType, string name)
+        public virtual HardwareItemModel HardwareItem { get; set; }
+        public CompatibilityPropertyModel() { }
+        public CompatibilityPropertyModel(string propertyType, string name)
         {
-            if(string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(name))
             {
-                name="Не определён";
+                name = "Не определён";
             }
             if (string.IsNullOrWhiteSpace(propertyType))
             {
@@ -37,7 +34,7 @@ namespace ComputerBuilder.DAL.Entities
         }
         public override string ToString()
         {
-            return PropertyType + " - " +Name;
+            return PropertyType + " - " + Name;
         }
     }
 }

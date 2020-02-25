@@ -23,7 +23,7 @@ namespace ComputerBuilder
         {
             services.AddControllers();
             services.AddSingleton<DataContext>();
-            services.AddScoped<IDbRepository, DbRepository>();
+            services.AddScoped<IRepository, Repository>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Computer builder API", Version = "v1" });

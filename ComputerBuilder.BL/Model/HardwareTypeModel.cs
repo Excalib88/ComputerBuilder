@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace ComputerBuilder.DAL.Entities
+namespace ComputerBuilder.BL.Model
 {
-    public class HardwareType
+    public class HardwareTypeModel
     {
         public int Id { get; set; }
         /// <summary>
@@ -13,19 +13,19 @@ namespace ComputerBuilder.DAL.Entities
         /// <summary>
         /// Список оборудования с таким типом
         /// </summary>
-        public ICollection<HardwareItem> HardwareList { get; set; }
+        public ICollection<HardwareItemModel> HardwareList { get; set; }
         /// <summary>
         /// Пустой конструктор
         /// </summary>
-        public HardwareType() { }
-        public HardwareType(string name)
+        public HardwareTypeModel() { }
+        public HardwareTypeModel(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentException("Название типа оборудования должно быть заполнено", nameof(name));
             }
             Name = name;
-            HardwareList = new List<HardwareItem>();
+            HardwareList = new List<HardwareItemModel>();
         }
 
         public override string ToString()

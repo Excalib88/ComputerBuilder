@@ -8,46 +8,35 @@ namespace ComputerBuilder.Controllers
     [Route("home")]
     public class HomeController : BaseController
     {
-        private readonly IDbRepository _repository;
-        public HomeController(IDbRepository repository)
+        private readonly IRepository _repository;
+        public HomeController(IRepository repository)
         {
             _repository = repository;
         }
 
-        //public IActionResult Index()
-        //{
-        //    return Ok();
-        //}
-
-        [HttpPost("add_hwItem/")]
-        public IActionResult AddHwItem(string name, double cost, string description, string manufacturerName, string hardwareType, string prop1, string propName)
+        [HttpPost("add_hwitem/")]
+        public IActionResult AddHwItem(string name, double cost, string description, string manufacturerName, string hardwareType, string propertyName, string propertyType)
         {
-            HardwareItem hardwareItem = new HardwareItem(name, cost, description, new Manufacturer(manufacturerName), new HardwareType(hardwareType));
-            CompatibilityProperty compatibilityProperty = new CompatibilityProperty(prop1, propName);          
+            HardwareItemEntity hardwareItem = new HardwareItemEntity(name, cost, description, new ManufacturerEntity(manufacturerName), new HardwareTypeEntity(hardwareType));
+            CompatibilityPropertyEntity compatibilityProperty = new CompatibilityPropertyEntity(propertyName, propertyType);          
             hardwareItem.PropertyList.Add(compatibilityProperty);
-            _repository.Add(hardwareItem);
-            return Ok();
+            _repository.AddAsync(hardwareItem);
+            return Ok();//как сделать Created и нужно ли?
+        }
+
+        [HttpGet("find_by_manufacturer/")]
+        public IActionResult FindItem(string manufacturer)
+        {
+            var items = _repository.Find<HardwareItemEntity>(i => i.Manufacturer.Name == manufacturer);
+            return Ok(items);
         }
 
         [HttpGet("get_all_hardware/")]
         public IActionResult GetAllHardware()
         {
-            var items = _repository.GetAll<HardwareItem>().ToList();
+            var items = _repository.GetAll<HardwareItemEntity>().ToList();
             return Ok(items);
         }
-        //[HttpGet("get_hwitem_by_manufacturer/{manufacturer_name}")]
-        //public IActionResult GetHwItemByManufacturer(string manufacturer_name)
-        //{
-        //    if (string.IsNullOrWhiteSpace(manufacturer_name))
-        //    {
-        //        return Ok("Название фирмы должно быть заполнено");
-        //    }
-        //    var items = _dbcontext.GetHardwareItems().Where(i => i.Manufacturer.Name == manufacturer_name).Select(i => new LookupItem
-        //    {
-        //        DisplayName = i.Manufacturer.Name + " " + i.Name + " -- Цена:" + i.Cost
-        //    }).ToList();
-        //    return Ok(items);
-        //}
     }
     
 

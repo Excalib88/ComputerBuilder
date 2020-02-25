@@ -1,12 +1,12 @@
-﻿using System;
+﻿using ComputerBuilder.DAL.Entities;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace ComputerBuilder.BL.Model
 {
-    public class ComputerBuild
+    public class ComputerBuildModel
     {
-        public int PCBuildId { get; set; }
+        public int Id { get; set; }
         /// <summary>
         /// Общая сумма сборки
         /// </summary>
@@ -18,30 +18,30 @@ namespace ComputerBuilder.BL.Model
         /// <summary>
         /// Название сборки
         /// </summary>
-        [StringLength(50)]
+        //[StringLength(50)]
         public string Name { get; set; }
         /// <summary>
         /// Описание сборки
         /// </summary>
-        [StringLength(255)]
         public string Description { get; set; } = " ";
         /// <summary>
         /// Список комплектующих
         /// </summary>
-        public virtual ICollection<HardwareItem> HardwareList { get; set; }
-        public ComputerBuild() { }
-        public ComputerBuild (string name,string description) 
+        public ICollection<ManyBuildsToManyHwItemsEntity> BuildItems { get; set; }
+
+        public ComputerBuildModel() { }
+        public ComputerBuildModel(string name, string description)
         {
             #region Проверки
             if (string.IsNullOrWhiteSpace(name))
             {
-                throw new ArgumentNullException("Название сборки должно быть заполнено",nameof(name));
+                throw new ArgumentNullException("Название сборки должно быть заполнено", nameof(name));
             }
             #endregion
             Name = name;
             Description = description;
             BuildDate = DateTime.Now;
-            HardwareList = new List<HardwareItem>();
+            BuildItems = new List<ManyBuildsToManyHwItemsEntity>();
             TotalCost = 0;
         }
 

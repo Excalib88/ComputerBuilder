@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
-namespace ComputerBuilder.DAL.Entities
+namespace ComputerBuilder.BL.Model
 {
-    public class Manufacturer
+    public class ManufacturerModel
     {
         public int Id { get; set; }
         /// <summary>
@@ -14,23 +13,23 @@ namespace ComputerBuilder.DAL.Entities
         /// <summary>
         /// Список оборудования с таким производителем
         /// </summary>
-        public ICollection<HardwareItem> HardwareList { get; set; }
+        public ICollection<HardwareItemModel> HardwareList { get; set; }
         /// <summary>
         /// Пустой конструктор
         /// </summary>
-        public Manufacturer() { }
+        public ManufacturerModel() { }
         /// <summary>
         /// Создать нового производителя.
         /// </summary>
         /// <param name="name">Название производителя</param>
-        public Manufacturer(string name)
+        public ManufacturerModel(string name)
         {
             if (string.IsNullOrWhiteSpace(name))
             {
                 throw new ArgumentNullException("Название не может быть пустым", nameof(name));
             }
             Name = name;
-            HardwareList = new List<HardwareItem>();
+            HardwareList = new List<HardwareItemModel>();
         }
         public override string ToString()
         {

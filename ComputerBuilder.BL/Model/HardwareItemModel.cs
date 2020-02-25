@@ -1,15 +1,17 @@
-﻿using System;
+﻿using ComputerBuilder.DAL.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace ComputerBuilder.BL.Model
 {
-    public class HardwareItem
+    public class HardwareItemModel
     {
         #region Свойства
         public int Id { get; set; }
         /// <summary>
         /// Название железки
         /// </summary>
+        //[StringLength(50)]
         public string Name { get; set; }
         /// <summary>
         /// Цена железки
@@ -23,33 +25,32 @@ namespace ComputerBuilder.BL.Model
         /// Производитель
         /// </summary>
         public int ManufacturerId { get; set; }
-        public Manufacturer Manufacturer { get; set; }
+        public ManufacturerModel Manufacturer { get; set; }
         /// <summary>
         /// Тип железа
         /// </summary>
         public int HardwareTypeId { get; set; }
-        public HardwareType HardwareType { get; set; }
+        public HardwareTypeModel HardwareType { get; set; }
         /// <summary>
         /// Список характеристик железки
         /// </summary>
-        public ICollection<CompatibilityProperty> PropertyList { get; set; }
+        public ICollection<CompatibilityPropertyModel> PropertyList { get; set; }
 
-        public int? PCBuildId { get; set; }
-        public ICollection<ComputerBuild> PCBuild { get; set; }
+        public ICollection<ManyBuildsToManyHwItemsEntity> BuildItems { get; set; }
         #endregion
 
         /// <summary>
         /// Пустой конструктор
         /// </summary>
-        public HardwareItem() 
+        public HardwareItemModel()
         {
             Name = "Не определено";
             Cost = 0;
             Description = "Не определено";
             Manufacturer = null;
             HardwareType = null;
-            PropertyList = new List<CompatibilityProperty>();
-            PCBuild = new List<ComputerBuild>();
+            PropertyList = new List<CompatibilityPropertyModel>();
+            BuildItems = new List<ManyBuildsToManyHwItemsEntity>();
         }
         /// <summary>
         /// Создание новой железки
@@ -59,11 +60,11 @@ namespace ComputerBuilder.BL.Model
         /// <param name="description">Описание (не обязательно)</param>
         /// <param name="manufacturer">Производитель</param>
         /// <param name="hardwareType">Тип оборудования</param>
-        public HardwareItem(string name,
+        public HardwareItemModel(string name,
             double cost,
             string description,
-            Manufacturer manufacturer,
-            HardwareType hardwareType)
+            ManufacturerModel manufacturer,
+            HardwareTypeModel hardwareType)
         {
             #region Проверка условий
             if (string.IsNullOrWhiteSpace(name))
@@ -76,7 +77,7 @@ namespace ComputerBuilder.BL.Model
             }
             if (string.IsNullOrEmpty(description))
             {
-                description=" ";
+                description = " ";
             }
             if (manufacturer == null)
             {
@@ -93,7 +94,7 @@ namespace ComputerBuilder.BL.Model
             Description = description;
             Manufacturer = manufacturer;
             HardwareType = hardwareType;
-            PropertyList = new List<CompatibilityProperty>();
+            PropertyList = new List<CompatibilityPropertyModel>();
         }
         public override string ToString()
         {

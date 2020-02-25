@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ComputerBuilder.DAL.Entities
 {
-    public class ComputerBuild
+    public class ComputerBuildEntity
     {
         public int Id { get; set; }
         /// <summary>
@@ -28,10 +28,10 @@ namespace ComputerBuilder.DAL.Entities
         /// <summary>
         /// Список комплектующих
         /// </summary>
-        public ICollection<BuildItem> BuildItems { get; set; }
+        public ICollection<ManyBuildsToManyHwItemsEntity> BuildItems { get; set; }
 
-        public ComputerBuild() { }
-        public ComputerBuild(string name, string description)
+        public ComputerBuildEntity() { }
+        public ComputerBuildEntity(string name, string description)
         {
             #region Проверки
             if (string.IsNullOrWhiteSpace(name))
@@ -42,7 +42,7 @@ namespace ComputerBuilder.DAL.Entities
             Name = name;
             Description = description;
             BuildDate = DateTime.Now;
-            BuildItems = new List<BuildItem>();
+            BuildItems = new List<ManyBuildsToManyHwItemsEntity>();
             TotalCost = 0;
         }
 

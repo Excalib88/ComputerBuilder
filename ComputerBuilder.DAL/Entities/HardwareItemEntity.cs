@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ComputerBuilder.DAL.Entities
 {
-    public class HardwareItem
+    public class HardwareItemEntity
     {
         #region Свойства
         public int Id { get; set; }
@@ -26,32 +26,32 @@ namespace ComputerBuilder.DAL.Entities
         /// Производитель
         /// </summary>
         public int ManufacturerId { get; set; }
-        public Manufacturer Manufacturer { get; set; }
+        public ManufacturerEntity Manufacturer { get; set; }
         /// <summary>
         /// Тип железа
         /// </summary>
         public int HardwareTypeId { get; set; }
-        public HardwareType HardwareType { get; set; }
+        public HardwareTypeEntity HardwareType { get; set; }
         /// <summary>
         /// Список характеристик железки
         /// </summary>
-        public ICollection<CompatibilityProperty> PropertyList { get; set; }
+        public ICollection<CompatibilityPropertyEntity> PropertyList { get; set; }
 
-        public ICollection<BuildItem> BuildItems { get; set; }
+        public ICollection<ManyBuildsToManyHwItemsEntity> BuildItems { get; set; }
         #endregion
 
         /// <summary>
         /// Пустой конструктор
         /// </summary>
-        public HardwareItem()
+        public HardwareItemEntity()
         {
             Name = "Не определено";
             Cost = 0;
             Description = "Не определено";
             Manufacturer = null;
             HardwareType = null;
-            PropertyList = new List<CompatibilityProperty>();
-            BuildItems = new List<BuildItem>();
+            PropertyList = new List<CompatibilityPropertyEntity>();
+            BuildItems = new List<ManyBuildsToManyHwItemsEntity>();
         }
         /// <summary>
         /// Создание новой железки
@@ -61,11 +61,11 @@ namespace ComputerBuilder.DAL.Entities
         /// <param name="description">Описание (не обязательно)</param>
         /// <param name="manufacturer">Производитель</param>
         /// <param name="hardwareType">Тип оборудования</param>
-        public HardwareItem(string name,
+        public HardwareItemEntity(string name,
             double cost,
             string description,
-            Manufacturer manufacturer,
-            HardwareType hardwareType)
+            ManufacturerEntity manufacturer,
+            HardwareTypeEntity hardwareType)
         {
             #region Проверка условий
             if (string.IsNullOrWhiteSpace(name))
@@ -95,7 +95,7 @@ namespace ComputerBuilder.DAL.Entities
             Description = description;
             Manufacturer = manufacturer;
             HardwareType = hardwareType;
-            PropertyList = new List<CompatibilityProperty>();
+            PropertyList = new List<CompatibilityPropertyEntity>();
         }
         public override string ToString()
         {

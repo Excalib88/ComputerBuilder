@@ -6,11 +6,11 @@ using System.Text.RegularExpressions;
 
 namespace ComputerBuilder.BL.Parser
 {
-    public class PriceParser : IParser<HardwareItem[]>
+    public class PriceParser : IParser<HardwareItemModel[]>
     {
 
         //Парсим общий список и создаём список комплектующих из Прайса
-        public HardwareItem[] Parse(string price)
+        public HardwareItemModel[] Parse(string price)
         {
             //var temp = Regex.Match(price, @"[^Специальное предложение]").Value.Length;
             //price = price.Remove(price.Length - temp, temp);
@@ -18,7 +18,7 @@ namespace ComputerBuilder.BL.Parser
             List<ParserRule> parserRules = new ParserRule().GetRules();
 
             //Создаём новый список
-            List<HardwareItem> hardware_list = new List<HardwareItem>();
+            List<HardwareItemModel> hardware_list = new List<HardwareItemModel>();
 
             //Парсим процессоры и вставляем в список
             var matches = price.SelectByHardwareType("(?<=Процессор\\s)[^ы;]+");
@@ -37,18 +37,18 @@ namespace ComputerBuilder.BL.Parser
             hardware_list.AddRange(ParseGPU(matches, parserRules.Where(r => r.HardwareType == "GPU").ToList()));
             return hardware_list.ToArray();
         }
-        private List<HardwareItem> ParseCPU(string[] CPUs, List<ParserRule> cpuRules)
+        private List<HardwareItemModel> ParseCPU(string[] CPUs, List<ParserRule> cpuRules)
         {
             //Задаем тип комплектующего
             HardwareType type = new HardwareType("Процессор");
             //Создаем новый список процессоров
-            List<HardwareItem> cpu_list = new List<HardwareItem>();
+            List<HardwareItemModel> cpu_list = new List<HardwareItemModel>();
             //Создаем список производителей процессоров
-            List<Manufacturer> cpu_manufacturers = new List<Manufacturer>();
+            List<ManufacturerModel> cpu_manufacturers = new List<ManufacturerModel>();
             //Заполняем список производителей из правил
             foreach(ParserRule r in cpuRules)
             {
-                cpu_manufacturers.Add(new Manufacturer(r.Rule_name));
+                cpu_manufacturers.Add(new ManufacturerModel(r.Rule_name));
             }
             //Перебираем все строки процессоров из прайса
             foreach (string s in CPUs)
@@ -63,8 +63,8 @@ namespace ComputerBuilder.BL.Parser
                         var cost = s.SelectCost();
                         var sock = Regex.Match(s, rule.Property_templates["Сокет"]).Value;
                         var cpu_name = Regex.Match(s, string.Format(rule.Property_templates["Name"],Regex.Escape(sock))).Value;
-                        var cpu = new HardwareItem(cpu_name, cost, description, cpu_manufacturers.Where(m=>m.Name==rule.Rule_name).FirstOrDefault(), type);
-                        cpu.PropertyList.Add(new CompatibilityProperty("Сокет", sock));
+                        var cpu = new HardwareItemModel(cpu_name, cost, description, cpu_manufacturers.Where(m=>m.Name==rule.Rule_name).FirstOrDefault(), type);
+                        cpu.PropertyList.Add(new CompatibilityPropertyModel("Сокет", sock));
                         cpu_list.Add(cpu);
                     }
                 }
@@ -72,14 +72,14 @@ namespace ComputerBuilder.BL.Parser
             return cpu_list;
         }
 
-        private List<HardwareItem> ParseMB(string[] MBs, List<ParserRule> mbRules)
+        private List<HardwareItemModel> ParseMB(string[] MBs, List<ParserRule> mbRules)
         {
-            List<HardwareItem> mb_list = new List<HardwareItem>();
-            List<Manufacturer> manufacturers = new List<Manufacturer>();
+            List<HardwareItemModel> mb_list = new List<HardwareItemModel>();
+            List<ManufacturerModel> manufacturers = new List<ManufacturerModel>();
             HardwareType motherboard = new HardwareType("Материнская плата");
             foreach (ParserRule r in mbRules)
             {
-                manufacturers.Add(new Manufacturer(r.Rule_name));
+                manufacturers.Add(new ManufacturerModel(r.Rule_name));
             }
             foreach (string s in MBs)
             {
@@ -87,9 +87,9 @@ namespace ComputerBuilder.BL.Parser
                 {
                     if (Regex.IsMatch(s, r.Rule_name))
                     {
-                        HardwareItem mb = new HardwareItem();
+                        HardwareItemModel mb = new HardwareItemModel();
                         var socket = Regex.Match(s, r.Property_templates["Сокет"]).Value;
-                        mb.PropertyList.Add(new CompatibilityProperty("Сокет", socket));
+                        mb.PropertyList.Add(new CompatibilityPropertyModel("Сокет", socket));
                         mb.Name = Regex.Match(s, r.Property_templates["Name"]).Value;
                         mb.Cost = s.SelectCost();
                         mb.Description = s.SelectDescription();
@@ -101,14 +101,14 @@ namespace ComputerBuilder.BL.Parser
             }
             return mb_list;
         }
-        private List<HardwareItem> ParseMemory(string[] mems, List<ParserRule> memRules)
+        private List<HardwareItemModel> ParseMemory(string[] mems, List<ParserRule> memRules)
         {
-            List<HardwareItem> mem_list = new List<HardwareItem>();
-            List<Manufacturer> manufacturers = new List<Manufacturer>();
+            List<HardwareItemModel> mem_list = new List<HardwareItemModel>();
+            List<ManufacturerModel> manufacturers = new List<ManufacturerModel>();
             HardwareType ram = new HardwareType("Оперативная память");
             foreach (ParserRule r in memRules)
             {
-                manufacturers.Add(new Manufacturer(r.Rule_name));
+                manufacturers.Add(new ManufacturerModel(r.Rule_name));
             }
             foreach (string s in mems)
             {
@@ -116,11 +116,11 @@ namespace ComputerBuilder.BL.Parser
                 {
                     if (Regex.IsMatch(s, r.Rule_name))
                     {
-                        HardwareItem mem = new HardwareItem();
+                        HardwareItemModel mem = new HardwareItemModel();
                         var prop = Regex.Match(s, r.Property_templates["Тип памяти"]).Value;
-                        mem.PropertyList.Add(new CompatibilityProperty("Тип памяти", prop));
+                        mem.PropertyList.Add(new CompatibilityPropertyModel("Тип памяти", prop));
                         prop = Regex.Match(s, r.Property_templates["Объём памяти"]).Value;
-                        mem.PropertyList.Add(new CompatibilityProperty("Объём памяти", prop));
+                        mem.PropertyList.Add(new CompatibilityPropertyModel("Объём памяти", prop));
                         mem.Name = Regex.Match(s, r.Property_templates["Name"]).Value;
                         mem.Cost = s.SelectCost();
                         mem.Description = Regex.Match(s, r.Property_templates["Description"]).Value;
@@ -132,14 +132,14 @@ namespace ComputerBuilder.BL.Parser
             }
             return mem_list;
         }
-        private List<HardwareItem> ParseHDD(string[] hdds, List<ParserRule> hddRules)
+        private List<HardwareItemModel> ParseHDD(string[] hdds, List<ParserRule> hddRules)
         {
-            List<HardwareItem> hdd_list = new List<HardwareItem>();
-            List<Manufacturer> manufacturers = new List<Manufacturer>();
+            List<HardwareItemModel> hdd_list = new List<HardwareItemModel>();
+            List<ManufacturerModel> manufacturers = new List<ManufacturerModel>();
             HardwareType hd = new HardwareType("Жесткий диск");
             foreach (ParserRule r in hddRules)
             {
-                manufacturers.Add(new Manufacturer(r.Rule_name));
+                manufacturers.Add(new ManufacturerModel(r.Rule_name));
             }
             foreach (string s in hdds)
             {
@@ -147,13 +147,13 @@ namespace ComputerBuilder.BL.Parser
                 {
                     if (Regex.IsMatch(s, r.Rule_name))
                     {
-                        HardwareItem hdd = new HardwareItem();
+                        HardwareItemModel hdd = new HardwareItemModel();
                         var prop = Regex.Match(s, r.Property_templates["Тип устройства"],RegexOptions.IgnoreCase).Value;
-                        hdd.PropertyList.Add(new CompatibilityProperty("Тип устройства", prop));
+                        hdd.PropertyList.Add(new CompatibilityPropertyModel("Тип устройства", prop));
                         prop = Regex.Match(s, r.Property_templates["Разъём"]).Value;
-                        hdd.PropertyList.Add(new CompatibilityProperty("Разъём", prop));
+                        hdd.PropertyList.Add(new CompatibilityPropertyModel("Разъём", prop));
                         prop = Regex.Match(s, r.Property_templates["Объём памяти"], RegexOptions.IgnoreCase).Value;
-                        hdd.PropertyList.Add(new CompatibilityProperty("Объём памяти", prop));
+                        hdd.PropertyList.Add(new CompatibilityPropertyModel("Объём памяти", prop));
                         hdd.Name = Regex.Match(s, r.Property_templates["Name"]).Value;
                         hdd.Cost = s.SelectCost();
                         hdd.Description = s.SelectDescription();
@@ -165,14 +165,14 @@ namespace ComputerBuilder.BL.Parser
             }
             return hdd_list;
         }
-        private List<HardwareItem> ParseGPU(string[] gpus, List<ParserRule> gpuRules)
+        private List<HardwareItemModel> ParseGPU(string[] gpus, List<ParserRule> gpuRules)
         {
-            List<HardwareItem> gpu_list = new List<HardwareItem>();
-            List<Manufacturer> manufacturers = new List<Manufacturer>();
+            List<HardwareItemModel> gpu_list = new List<HardwareItemModel>();
+            List<ManufacturerModel> manufacturers = new List<ManufacturerModel>();
             HardwareType videocard = new HardwareType("Видеокарта");
             foreach (ParserRule r in gpuRules)
             {
-                manufacturers.Add(new Manufacturer(r.Rule_name));
+                manufacturers.Add(new ManufacturerModel(r.Rule_name));
             }
             foreach (string s in gpus)
             {
@@ -180,9 +180,9 @@ namespace ComputerBuilder.BL.Parser
                 {
                     if (Regex.IsMatch(s, r.Rule_name))
                     {
-                        HardwareItem gpu = new HardwareItem();
+                        HardwareItemModel gpu = new HardwareItemModel();
                         var prop = Regex.Match(s, r.Property_templates["Объём памяти"], RegexOptions.IgnoreCase).Value;
-                        gpu.PropertyList.Add(new CompatibilityProperty("Объём памяти", prop));
+                        gpu.PropertyList.Add(new CompatibilityPropertyModel("Объём памяти", prop));
                         gpu.Name = Regex.Match(s, r.Property_templates["Name"], RegexOptions.IgnoreCase).Groups[3].Value;
                         gpu.Description = Regex.Match(s, r.Property_templates["Описание"]).Value;
                         gpu.Cost = s.SelectCost();
